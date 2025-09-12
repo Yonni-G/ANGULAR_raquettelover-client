@@ -1,11 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ApiService } from '../../../services/api-service';
+import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from '../../../services/message.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { emailValidator } from '../../../validators/emailValidator';
 import { passwordValidator } from '../../../validators/passwordValidator';
 import { finalize } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { nameValidator } from '../../../validators/nameValidator';
 
 @Component({
   selector: 'app-signin',
@@ -15,12 +17,12 @@ import { finalize } from 'rxjs';
 })
 export class SigninComponent {
   private readonly messageService: MessageService = inject(MessageService);
-  private readonly apiService: ApiService = inject(ApiService);
-  private readonly router = inject(Router);
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly jwtHelper = inject(JwtHelperService);
 
   loading = false;
 
-  form = new FormGroup({
+  form = new FormGroup({    
     username: new FormControl(null, [Validators.required, emailValidator()]),
     password: new FormControl(null, [
       Validators.required,
@@ -31,11 +33,10 @@ export class SigninComponent {
 
   onSubmit() {
     if (this.form.valid) {
-
-      // on va interroger notre api via le service apiService
+      // on va interroger notre api via le service authService
       this.loading = true;
 
-      this.apiService
+      this.authService
         .signIn({
           username: this.form.value.username || '',
           password: this.form.value.password || '',
@@ -47,19 +48,26 @@ export class SigninComponent {
         )
         .subscribe({
           next: (res) => {
+            if(res.data?.firstName) {
+              this.authService.setFirstName(res.data.firstName);
+            }
             // Succès
-            //this.router.navigate(['/dashboard/my-learning-space']);
-            this.messageService.setMessage({
-              text: res.message!,
-              type: 'success',
-            });
-            //this.router.navigate(['/home']);
+            this.authService.setJwtToken(res.data.jwtToken || '');
+            this.authService.login();
+            
+            // rediriger en fonction des rôles
+            this.authService.redirectUser(this.authService.getRoles());
           },
           error: (err) => {
-            console.log(err);
             // Erreur
+            let errorMessage = 'Connexion impossible avec le serveur';
+
+            if (err.error?.error?.message) {
+              // Message précis retourné par le backend
+              errorMessage = err.error.error.message;
+            }
             this.messageService.setMessage({
-              text: err.error.error.message,
+              text: errorMessage,
               type: 'error',
             });
             // on regarde si on a reçu un tableau fields avec des erreurs de validation
@@ -71,7 +79,6 @@ export class SigninComponent {
                   // on ajoute l'erreur au FormControl
                   control.setErrors({ serverError: fieldError.message });
                 }
-                //console.log('Field error:', fieldError.field, fieldError.message);
               }
             }
           },

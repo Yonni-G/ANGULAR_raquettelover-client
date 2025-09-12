@@ -14,6 +14,7 @@
               Home
             </a>
           </li>
+          @if(!isLoggedIn) {
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/signin']" routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }">
@@ -25,12 +26,29 @@
               Sign Up
             </a>
           </li>
+        }
+          @if(isLoggedIn) {
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }">
-              Contact
+            <a class="nav-link" [routerLink]="['/dashboard/admin']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              admin
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/manager']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              manager
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/player']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              player
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="signOut()" style="cursor: pointer;">
+              Logout ({{ firstName }})
+            </a>
+          </li>
+        }
         </ul>
       </div>
     </div>

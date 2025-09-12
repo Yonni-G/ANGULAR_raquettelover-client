@@ -2,18 +2,73 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { SigninComponent } from './pages/auth/signin/signin.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
+import { AdminHomeComponent } from './pages/dashboard/admin/admin-home/admin-home.component';
+import { PlayerHomeComponent } from './pages/dashboard/player/player-home/player-home.component';
+import { AuthGuard } from './guards/auth.guard';
+import { PlaceListComponent } from './pages/dashboard/place/place-list/place-list.component';
+import { PlaceFormComponent } from './pages/dashboard/place/place-form/place-form.component';
+import { CourtFormComponent } from './pages/dashboard/court/court-form/court-form.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: HomeComponent,
-    },
-    {
-        path: 'signin',
-        component: SigninComponent,
-    },
-    {
-        path: 'signup',
-        component: SignupComponent,
-    },
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'signin',
+    component: SigninComponent,
+  },
+  {
+    path: 'signup',
+    component: SignupComponent,
+  },
+  {
+    path: 'dashboard',
+    children: [
+      {
+        path: 'place',
+        children: [
+          {
+            path: 'list',
+            component: PlaceListComponent,
+          },
+          {
+            path: 'create',
+            component: PlaceFormComponent,
+          },
+          {
+            path: ':id',
+            children: [
+              {
+                path: 'cours/create',
+                component: CourtFormComponent
+              }
+            ]
+          }
+        ],
+      },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: '',
+            component: AdminHomeComponent,
+          },
+        ],
+        data: { roles: ['ROLE_ADMIN'] },
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'player',
+        children: [
+          {
+            path: '',
+            component: PlayerHomeComponent,
+          },
+        ],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'] },
+        canActivate: [AuthGuard],
+      },
+    ],
+  },
 ];

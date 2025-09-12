@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from '../../../services/message.service';
-import { ApiService } from '../../../services/api-service';
+import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { emailValidator } from '../../../validators/emailValidator';
 import { passwordValidator } from '../../../validators/passwordValidator';
 import { passwordMatchValidator } from '../../../validators/passwordMatchValidator';
 import { finalize } from 'rxjs';
+import { nameValidator } from '../../../validators/nameValidator';
 
 @Component({
   selector: 'app-signup',
@@ -16,13 +17,15 @@ import { finalize } from 'rxjs';
 })
 export class SignupComponent {
   private readonly messageService: MessageService = inject(MessageService);
-  private readonly apiService: ApiService = inject(ApiService);
+  private readonly authService: AuthService = inject(AuthService);
   private readonly router = inject(Router);
 
   loading = false;
 
   form = new FormGroup(
     {
+      firstName: new FormControl(null, [Validators.required, nameValidator()]),
+      lastName: new FormControl(null, [Validators.required, nameValidator()]),
       username: new FormControl('', [Validators.required, emailValidator()]),
       password: new FormControl('', [Validators.required, passwordValidator()]),
       confirmPassword: new FormControl('', [Validators.required]),
@@ -32,16 +35,17 @@ export class SignupComponent {
 
   onSubmit() {
     if (this.form.valid) {
-
       let user: any = {
+        firstName: this.form.value.firstName || '',
+        lastName: this.form.value.lastName || '',
         username: this.form.value.username || '',
         password: this.form.value.password || '',
         confirmPassword: this.form.value.confirmPassword || '',
       };
 
       this.loading = true;
-      // on va interroger notre api via le service apiService
-      this.apiService
+      // on va interroger notre api via le service authService
+      this.authService
         .signUp(user)
         .pipe(
           finalize(() => {
@@ -51,15 +55,22 @@ export class SignupComponent {
         .subscribe({
           next: (response) => {
             //console.log('Registration successful', response);
-            this.messageService.setMessage(
-              { text: response.message!, type: 'success' }
-            );
+            this.messageService.setMessage({
+              text: response.message!,
+              type: 'success',
+            });
             //this.router.navigate(['/login']);
           },
           error: (err) => {
-            console.error('Registration failed', err);
+            // Erreur
+            let errorMessage = 'Connexion impossible avec le serveur';
+
+            if (err.error?.error?.message) {
+              // Message précis retourné par le backend
+              errorMessage = err.error.error.message;
+            }
             this.messageService.setMessage({
-              text: err.error.error.message,
+              text: errorMessage,
               type: 'error',
             });
             // on regarde si on a reçu un tableau fields avec des erreurs de validation

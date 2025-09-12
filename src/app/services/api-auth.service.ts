@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class ApiAuthService {
   private readonly baseUrl = environment.apiUrl;
 
   constructor(private readonly http: HttpClient) {}
@@ -23,7 +23,7 @@ export class ApiService {
   }
 
   signUp(user: {
-    email: string;
+    username: string;
     password: string;
     confirmPassword: string;
   }): Observable<ApiResponse<any>> {
