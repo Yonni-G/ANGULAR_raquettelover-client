@@ -10,7 +10,7 @@ RUN npm install
 COPY . .
 
 # Builder l’application en mode production
-RUN npm run build --prod
+RUN npm run build --production
 
 # Étape 2 : servir les fichiers statiques avec nginx
 FROM nginx:alpine
