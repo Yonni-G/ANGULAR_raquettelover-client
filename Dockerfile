@@ -14,7 +14,7 @@ RUN npm run build --production
 
 # Étape 2 : servir les fichiers statiques avec nginx
 FROM nginx:alpine
-COPY --from=build /app/dist/ton-projet /usr/share/nginx/html
+COPY --from=build /app/dist/raquettelover-client /usr/share/nginx/html
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
