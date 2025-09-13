@@ -6,11 +6,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copier le reste du code source Angular
+# Copier le code source Angular
 COPY . .
 
-# Builder l’application en mode production
-RUN npm run build --production
+# Builder l'application en mode production
+RUN npm run build -- --configuration=production
 
 # Étape 2 : servir les fichiers statiques avec nginx
 FROM nginx:alpine
