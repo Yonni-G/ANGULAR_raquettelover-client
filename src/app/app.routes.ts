@@ -37,25 +37,20 @@ export const routes: Routes = [
             component: PlaceFormComponent,
           },
           {
+            path: ':id/edit',
+            component: PlaceFormComponent,
+          },
+          {
             path: ':id',
             children: [
               {
                 path: 'cours/create',
-                component: CourtFormComponent
-              }
-            ]
-          }
-        ],
-      },
-      {
-        path: 'admin',
-        children: [
-          {
-            path: '',
-            component: AdminHomeComponent,
+                component: CourtFormComponent,
+              },
+            ],
           },
         ],
-        data: { roles: ['ROLE_ADMIN'] },
+        data: { roles: ['ROLE_ADMIN', 'ROLE_MANAGER'] },
         canActivate: [AuthGuard],
       },
       {

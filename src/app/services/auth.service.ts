@@ -9,17 +9,23 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly JWT_TOKEN_KEY = 'jwtToken';
 
+  private readonly JWT_TOKEN_KEY = 'jwtToken';
   private readonly apiAuthService: ApiAuthService = inject(ApiAuthService);
   private readonly router = inject(Router);
   private readonly jwtHelper = inject(JwtHelperService);
+  private readonly isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  private roles: string[] = [];
+  private firstName: string = '';
+  private userId!: number;
+
+  public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor() {
     this.login();
   }
 
-  public login() {    
+  public login() {
     const token = this.getJwtToken();
     if (token) {
       const decodedToken: any = this.jwtHelper.decodeToken(token);
@@ -31,9 +37,6 @@ export class AuthService {
     // on informe les abonnés que l'utilisateur est connecté
     this.setLoggedIn(true);
   }
-
-  private readonly isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   public setLoggedIn(value: boolean) {
     this.isLoggedInSubject.next(value);
@@ -87,8 +90,6 @@ export class AuthService {
     }
   }
 
-  private roles: string[] = [];
-
   setRoles(roles: string[]) {
     this.roles = roles;
   }
@@ -101,7 +102,6 @@ export class AuthService {
     return this.roles.includes(role);
   }
 
-  private userId!: number;
   setUserId(userId: number) {
     this.userId = userId;
   }
@@ -109,13 +109,11 @@ export class AuthService {
     return this.userId;
   }
 
-  private firstName: string = '';
-
   setFirstName(firstName: string) {
     this.firstName = firstName;
     localStorage.setItem('firstName', firstName);
   }
-  
+
   getFirstName(): string {
     // si on a la valeur dans le localstorage
     const storedFirstName = localStorage.getItem('firstName');

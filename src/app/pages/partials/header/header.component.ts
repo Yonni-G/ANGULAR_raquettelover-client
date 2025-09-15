@@ -10,8 +10,11 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
+  role: string | null = null;
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(public readonly authService: AuthService) {
+    // role = this.authService.
+  }
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe((status) => {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -11,87 +11,123 @@ import { addressValidator } from '../../../../validators/addressValidator';
 import { PlaceService } from '../../../../services/place.service';
 import { MessageService } from '../../../../services/message.service';
 import { AuthService } from '../../../../services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
+import { Place } from '../../../../models/Place';
+import { SpinnerService } from '../../../../services/spinner.service';
 
 @Component({
   selector: 'app-place-form',
   imports: [ReactiveFormsModule],
   templateUrl: './place-form.component.html',
-  styleUrl: './place-form.component.css',
+  styleUrls: ['./place-form.component.css'],
 })
-export class PlaceFormComponent {
+export class PlaceFormComponent implements OnInit {
   private readonly router = inject(Router);
+  isEditMode: boolean = false;
+  form!: FormGroup;
+  loading: boolean = false;
+
   constructor(
     private readonly placeService: PlaceService,
     private readonly messageService: MessageService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly route: ActivatedRoute,
+    private readonly fb: FormBuilder,
+    private readonly spinnerService: SpinnerService
   ) {}
 
-  loading = false;
+  ngOnInit() {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = idParam ? +idParam : null; // conversion string -> number, ou null si idParam est null
 
-  form = new FormGroup({
-    name: new FormControl(null, [Validators.required, nameValidator()]),
-    address: new FormControl(null, [Validators.required, addressValidator()]),
-  }); // Ajout du validateur de correspondance);
+    this.isEditMode = !!id;
+    this.spinnerService.show();
 
-  onSubmit() {
-    if (this.form.valid) {
-      this.loading = true;
+    // Initialisation du formulaire
+    this.form = this.fb.group({
+      name: new FormControl(null, [Validators.required, nameValidator()]),
+      address: new FormControl(null, [Validators.required, addressValidator()]),
+    });
 
-      let place: any = {
-        userId: this.authService.getUserId(),
-        name: this.form.value.name || '',
-        address: this.form.value.address || '',
-        createdAt: null,
-      };
-
+    // Si édition, charger les données et pré-remplir le formulaire
+    if (this.isEditMode && id !== null) {
       this.placeService
-        .createPlace(place)
-        .pipe(
-          finalize(() => {
-            this.loading = false; // ← toujours exécuté
-          })
-        )
+        .findById(id)
+        .pipe(finalize(() => this.spinnerService.hide()))
         .subscribe({
-          next: (response) => {
-            this.messageService.setMessage({
-              text: response.message!,
-              type: 'success',
-            });
-            this.router.navigate(['dashboard/place/list']);
-          },
+          next: (data) => this.form.patchValue(data),
           error: (err) => {
-            // Erreur
-            let errorMessage = 'Connexion impossible avec le serveur';
-
-            if (err.error?.error?.message) {
-              // Message précis retourné par le backend
-              errorMessage = err.error.error.message;
-            }
+            this.spinnerService.hide();
             this.messageService.setMessage({
-              text: errorMessage,
+              text: err.error.error.message || 'Erreur lors du chargement',
               type: 'error',
             });
-            // on regarde si on a reçu un tableau fields avec des erreurs de validation
-            if (err.error.error.fields) {
-              for (let fieldError of err.error.error.fields) {
-                // on cherche le FormControl correspondant
-                const control = this.form.get(fieldError.field);
-                if (control) {
-                  // on ajoute l'erreur au FormControl
-                  control.setErrors({ serverError: fieldError.message });
-                }
-                //console.log('Field error:', fieldError.field, fieldError.message);
-              }
-            }
+            this.router.navigate(['/dashboard/place/list']);
           },
         });
     } else {
+      this.spinnerService.hide();
+    }
+  }
+
+  onSubmit() {
+    if (!this.form.valid) {
       this.messageService.setMessage({
-        text: 'Form is invalid',
+        text: 'Le formulaire est invalide !',
         type: 'error',
       });
+      return;
     }
+
+    const formValue = this.form.value;
+
+    let place: Place = {
+      id: this.isEditMode ? +this.route.snapshot.paramMap.get('id')! : null,
+      name: formValue.name || '',
+      address: formValue.address || '',
+      createdAt: null,
+      userId: this.authService.getUserId(),
+    };
+
+    this.loading = true;
+
+    const saveObservable = this.isEditMode
+      ? this.placeService.updatePlace(place) // Méthode à implémenter dans ton service
+      : this.placeService.createPlace(place);
+
+    saveObservable.pipe(finalize(() => this.loading = false)).subscribe({
+      next: (response) => {
+        this.messageService.setMessage({
+          text:
+            response.message ||
+            (this.isEditMode
+              ? 'Lieu modifié avec succès'
+              : 'Lieu créé avec succès'),
+          type: 'success',
+        });
+        this.router.navigate(['/dashboard/place/list']);
+      },
+      error: (err) => {
+        let errorMessage = 'Connexion impossible avec le serveur';
+
+        if (err.error?.error?.message) {
+          errorMessage = err.error.error.message;
+        }
+        this.messageService.setMessage({
+          text: errorMessage,
+          type: 'error',
+        });
+
+        if (err.error.error.fields) {
+          for (let fieldError of err.error.error.fields) {
+            const control = this.form.get(fieldError.field);
+            if (control) {
+              control.setErrors({ serverError: fieldError.message });
+            }
+          }
+        }
+      },
+    });
   }
 }

@@ -1,6 +1,7 @@
 export interface Place {
-  id: number;
+  id: number | null;
   name: string;
   address: string;
-  createdAt: string; // ISO date string
+  createdAt: string | null; // ISO date string
+  userId: number;
 }

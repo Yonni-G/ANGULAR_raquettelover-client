@@ -1,8 +1,5 @@
 <!-- on affiche la liste des lieux créés par le manager -->
-@if (loading) {
-    <app-spinner />
-}
-@else {
+
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-warning">📍 Mes Lieux</h2>
@@ -11,6 +8,13 @@
         </a>
     </div>
 
+    @if(errorMessage) {
+    <div class="alert alert-danger shadow-sm border-0">
+        <strong>Erreur :</strong> {{ errorMessage }}
+        <button class="btn btn-link" (click)="loadPlaces()">Réessayer</button>
+    </div>
+    }
+    @else {
     @if (places.length === 0) {
     <div class="alert alert-info shadow-sm border-0">
         <strong>Info :</strong> Vous n'avez pas encore créé de lieux.
@@ -22,25 +26,31 @@
     <div class="row g-4">
         @for (place of places; track place.id) {
         <div class="col-md-6 col-lg-4">
-            <a [routerLink]="['/dashboard/place', place.id]" class="text-decoration-none">
-                <div class="card shadow-sm border-0 h-100 hover-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-dark fw-bold mb-2">{{ place.name }}</h5>
-                        <p class="card-text text-muted mb-2">{{ place.address }}</p>
-                        <small class="text-secondary">
-                            Créé le {{ place.createdAt | date:'longDate' }}
-                        </small>
-                    </div>
-                    <div class="card-footer">
-                        <a routerLink="/dashboard/place/{{ place.id}}/cours/create" class="btn btn-gradient px-4">
-                            + Créer un court (tennis, padel, squash)
-                        </a>
-                    </div>
+            <div class="card shadow-sm border-0 h-100 hover-card position-relative">
+
+                <!-- Bouton édition en absolute en haut à droite -->
+                <a routerLink="/dashboard/place/{{ place.id }}/edit"
+                    class="btn btn-sm btn-outline-primary position-absolute top-0 end-0 m-2" title="Éditer ce lieu">
+                    <i class="bi bi-pencil"></i> <!-- Bootstrap Icons -->
+                </a>
+
+                <div class="card-body">
+                    <h5 class="card-title text-dark fw-bold mb-2">{{ place.name }}</h5>
+                    <p class="card-text text-muted mb-2">{{ place.address }}</p>
+                    <small class="text-secondary">
+                        Créé le {{ place.createdAt | date:'longDate' }}
+                    </small>
                 </div>
-            </a>
+                <div class="card-footer">
+                    <a routerLink="/dashboard/place/{{ place.id}}/cours/create" class="btn btn-gradient px-4">
+                        + Créer un court (tennis, padel, squash)
+                    </a>
+                </div>
+            </div>
         </div>
         }
     </div>
+
+    }
     }
 </div>
-}

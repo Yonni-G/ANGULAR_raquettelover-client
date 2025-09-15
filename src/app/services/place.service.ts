@@ -15,7 +15,15 @@ export class PlaceService {
     return this.apiPlaceService.getPlaces();
   }
 
-  createPlace(place: Place): Observable<ApiResponse<any>> {
+  createPlace(place: Place) {
     return this.apiPlaceService.createPlace(place);
+  }
+
+  updatePlace(place: Place) {
+    return this.apiPlaceService.updatePlace(place);
+  }
+
+  findById(id: number): Observable<Place> {
+    return this.apiPlaceService.findById(id);
   }
 }

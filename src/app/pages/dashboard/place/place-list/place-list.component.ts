@@ -5,30 +5,49 @@ import { Place } from '../../../../models/Place';
 import { DatePipe } from '@angular/common';
 import { finalize } from 'rxjs';
 import { SpinnerComponent } from '../../../partials/spinner/spinner.component';
+import { MessageService } from '../../../../services/message.service';
+import { SpinnerService } from '../../../../services/spinner.service';
 
 @Component({
   selector: 'app-place-list',
-  imports: [RouterLink, DatePipe, SpinnerComponent],
+  imports: [RouterLink, DatePipe],
   templateUrl: './place-list.component.html',
   styleUrls: ['./place-list.component.css'],
 })
 export class PlaceListComponent implements OnInit {
-  constructor(private readonly placeService: PlaceService) {}
+  constructor(
+    private readonly placeService: PlaceService,
+    private readonly messageService: MessageService,
+    private readonly spinnerService: SpinnerService
+  ) {}
   places: Place[] = [];
   loading: boolean = true;
+  errorMessage: string | null = null;
 
   ngOnInit() {
     this.loadPlaces();
   }
 
-  private loadPlaces() {
-    this.placeService.getPlaces()
-    .pipe(
-      finalize(() => { this.loading = false; })
-    )
-    .subscribe({
-      next: (places) => (this.places = places),
-      error: (error) => console.error('Error loading places:', error),
-    });
+  public loadPlaces() {
+    this.spinnerService.show();
+    this.placeService
+      .getPlaces()
+      .pipe(
+        finalize(() => {
+          this.spinnerService.hide();
+        })
+      )
+      .subscribe({
+        next: (places) => (this.places = places),
+        error: (error) => {
+          this.errorMessage =
+            error.error?.error?.message ||
+            "Erreur serveur : impossible d'accéder au serveur";
+          this.messageService.setMessage({
+            text: this.errorMessage!,
+            type: 'error',
+          });
+        },
+      });
   }
 }
