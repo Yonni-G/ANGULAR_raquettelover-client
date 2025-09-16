@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { SigninComponent } from './pages/auth/signin/signin.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
-import { AdminHomeComponent } from './pages/dashboard/admin/admin-home/admin-home.component';
 import { PlayerHomeComponent } from './pages/dashboard/player/player-home/player-home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PlaceListComponent } from './pages/dashboard/place/place-list/place-list.component';
@@ -37,14 +36,18 @@ export const routes: Routes = [
             component: PlaceFormComponent,
           },
           {
-            path: ':id/edit',
+            path: ':placeId/edit',
             component: PlaceFormComponent,
           },
           {
-            path: ':id',
+            path: ':placeId/court',
             children: [
               {
-                path: 'cours/create',
+                path: 'create',
+                component: CourtFormComponent,
+              },
+              {
+                path: ':courtId/edit',
                 component: CourtFormComponent,
               },
             ],

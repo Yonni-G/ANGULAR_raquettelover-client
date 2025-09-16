@@ -1,1 +1,97 @@
-<p>court-form works!</p>
+<main class="container my-5">
+    <!-- Section Hero -->
+    <section class="text-center mb-5">
+        <div class="mb-3">
+            <i class="bi bi-bounding-box-circles display-3 text-warning"></i>
+        </div>
+        <h1 class="fw-bold text-warning mb-3">{{ isEditMode ? 'Éditer' : 'Créer' }} un court</h1>
+        <p class="text-muted fs-5">
+            Complétez le formulaire ci-dessous
+        </p>
+    </section>
+
+    <!-- Section Formulaire -->
+    <section class="row">
+        <div class="col-md-6 offset-md-3">
+            <form (submit)="onSubmit()" [formGroup]="form" class="bg-light p-4 rounded-4 shadow">
+
+                <!-- Nature du terrain-->
+                <div class="mb-3">
+                    <label for="type" class="form-label fw-bold text-warning">
+                        <i class="bi bi-list-ul me-2"></i>Type de terrain
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-collection text-warning"></i>
+                        </span>
+                        <select formControlName="type" id="type" name="type" class="form-select"
+                            required>
+                            <option value="" disabled selected>Merci de choisir un sport</option>
+                            @for (type of types; track type.name) {
+                            <option [value]="type.name">{{ type.label }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    @if(form.get('type')?.touched && form.get('type')?.invalid) {
+                    <small class="text-warning fst-italic">
+                        {{ form.get('courtType')?.getError('serverError') || 'Veuillez sélectionner un type de terrain
+                        valide.' }}
+                    </small>
+                    }
+                </div>
+
+
+                <!-- Nom du court -->
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold text-warning">
+                        <i class="bi bi-signpost-split me-2"></i>Nommez votre court
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-pencil-square text-warning"></i></span>
+                        <input formControlName="name" type="text" id="name" name="name" class="form-control"
+                            placeholder="Court de tennis n°1" required>
+                    </div>
+                    @if(form.get('name')?.touched && form.get('name')?.invalid) {
+                    @if(form.get('name')?.hasError('serverError') || form.get('name')?.hasError('invalidName')) {
+                    <small class="text-warning fst-italic">{{ form.get('name')?.getError('serverError') || 'Le nom doit
+                        faire plus de 2 caractères (et 50 au maximum)' }}</small>
+                    }
+                    }
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-bold text-warning">
+                        <i class="bi bi-geo-alt me-2"></i>Fournissez une description de l'emplacement
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-card-text text-warning"></i></span>
+                        <textarea formControlName="description" id="description" name="description" class="form-control"
+                            rows="3" placeholder="Court n°1 qui est accessible à droite en entrant" required></textarea>
+                    </div>
+                    @if(form.get('description')?.touched && form.get('description')?.invalid) {
+                    @if(form.get('description')?.hasError('serverError') ||
+                    form.get('description')?.hasError('invalidDescription')) {
+                    <small class="text-warning fst-italic">{{ form.get('description')?.getError('serverError') || 'La
+                        description doit faire plus de 20 caractères (et 100 au maximum)' }}</small>
+                    }
+                    }
+                </div>
+
+                <!-- Bouton soumission -->
+                <div class="text-center mt-4">
+                    <button [disabled]="!form.valid || loading" class="btn btn-warning text-white fw-bold px-4">
+                        <i class="bi bi-save-fill me-2"></i>
+                        @if (!loading) {
+                        Enregistrer
+                        } @else {
+                        <span class="spinner-border spinner-border-sm me-2"></span> Chargement...
+                        }
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+</main>

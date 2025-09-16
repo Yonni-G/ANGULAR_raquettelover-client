@@ -27,6 +27,7 @@ export class PlaceFormComponent implements OnInit {
   isEditMode: boolean = false;
   form!: FormGroup;
   loading: boolean = false;
+  placeId: number | null = null;
 
   constructor(
     private readonly placeService: PlaceService,
@@ -38,10 +39,10 @@ export class PlaceFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    const id = idParam ? +idParam : null; // conversion string -> number, ou null si idParam est null
+    const idParam = this.route.snapshot.paramMap.get('placeId');
+    this.placeId = idParam ? +idParam : null; // conversion string -> number, ou null si idParam est null
 
-    this.isEditMode = !!id;
+    this.isEditMode = !!this.placeId;
     this.spinnerService.show();
 
     // Initialisation du formulaire
@@ -51,9 +52,9 @@ export class PlaceFormComponent implements OnInit {
     });
 
     // Si édition, charger les données et pré-remplir le formulaire
-    if (this.isEditMode && id !== null) {
+    if (this.isEditMode && this.placeId !== null) {
       this.placeService
-        .findById(id)
+        .findById(this.placeId)
         .pipe(finalize(() => this.spinnerService.hide()))
         .subscribe({
           next: (data) => this.form.patchValue(data),
@@ -83,7 +84,7 @@ export class PlaceFormComponent implements OnInit {
     const formValue = this.form.value;
 
     let place: Place = {
-      id: this.isEditMode ? +this.route.snapshot.paramMap.get('id')! : null,
+      id: this.placeId,// peut valoir null pour un CREATE ou passé par l'URL pour l'UPDATE
       name: formValue.name || '',
       address: formValue.address || '',
       createdAt: null,
