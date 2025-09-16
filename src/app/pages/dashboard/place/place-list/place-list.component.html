@@ -1,56 +1,98 @@
-<!-- on affiche la liste des lieux créés par le manager -->
-
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-warning">📍 Mes Lieux</h2>
-        <a routerLink="/dashboard/place/create" class="btn btn-gradient px-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="fw-bold text-warning mb-0">📍 Mes Lieux</h2>
+        <a routerLink="/dashboard/place/create" class="btn btn-gradient px-4 fw-semibold shadow-sm"
+            style="background: linear-gradient(45deg, #f6b93b, #fa983a); color: #212529;">
             + Créer un lieu
         </a>
     </div>
 
-    @if(errorMessage) {
-    <div class="alert alert-danger shadow-sm border-0">
-        <strong>Erreur :</strong> {{ errorMessage }}
-        <button class="btn btn-link" (click)="loadPlaces()">Réessayer</button>
+    <!-- Erreur -->
+    @if (errorMessage) {
+    <div class="alert alert-danger shadow rounded-3 d-flex justify-content-between align-items-center gap-3 p-3">
+        <div>
+            <strong>Erreur :</strong> {{ errorMessage }}
+        </div>
+        <button class="btn btn-outline-light btn-sm px-3" (click)="loadPlaces()">Réessayer</button>
     </div>
     }
+
+    <!-- Aucune donnée -->
     @else {
     @if (places.length === 0) {
-    <div class="alert alert-info shadow-sm border-0">
+    <div class="alert alert-info shadow rounded-3 text-center fs-5 py-4">
         <strong>Info :</strong> Vous n'avez pas encore créé de lieux.
-        <a routerLink="/dashboard/place/create" class="ms-2 fw-semibold">Créer un lieu</a>
+        <a routerLink="/dashboard/place/create" class="ms-2 fw-semibold text-decoration-underline text-warning">
+            Créer un lieu
+        </a>
     </div>
     }
 
+    <!-- Liste des lieux -->
     @if (places.length > 0) {
     <div class="row g-4">
-        @for (place of places; track place.id) {
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm border-0 h-100 hover-card position-relative">
 
-                <!-- Bouton édition en absolute en haut à droite -->
+        @for (place of places; track place.id) {
+        <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+            <div class="card shadow border-0 rounded-4 position-relative w-100 transition-shadow hover-shadow"
+                style="background: #fff;">
+
+                <!-- Bouton édition -->
                 <a routerLink="/dashboard/place/{{ place.id }}/edit"
-                    class="btn btn-sm btn-outline-primary position-absolute top-0 end-0 m-2" title="Éditer ce lieu">
-                    <i class="bi bi-pencil"></i> <!-- Bootstrap Icons -->
+                    class="btn btn-sm btn-outline-warning position-absolute top-0 end-0 m-3" title="Éditer ce lieu"
+                    style="z-index: 10;">
+                    <i class="bi bi-pencil"></i>
                 </a>
 
-                <div class="card-body">
+                <!-- Card body -->
+                <div class="card-body px-4 pb-3 pt-4">
                     <h5 class="card-title text-dark fw-bold mb-2">{{ place.name }}</h5>
-                    <p class="card-text text-muted mb-2">{{ place.address }}</p>
-                    <small class="text-secondary">
+                    <p class="card-text text-secondary mb-3 small">{{ place.address }}</p>
+                    <small class="text-muted d-block fst-italic">
                         Créé le {{ place.createdAt | date:'longDate' }}
                     </small>
                 </div>
-                <div class="card-footer">
-                    <a routerLink="/dashboard/place/{{ place.id}}/court/create" class="btn btn-gradient px-4">
-                        + Créer un court (tennis, padel, squash)
+
+                <!-- Card footer / courts -->
+                <div class="card-footer bg-light pt-0 px-4 pb-4 border-0 rounded-bottom">
+
+                    <ul class="list-unstyled mb-3">
+                        @for (court of place.courts; track court.id) {
+                        <li class="mb-2">
+                            <a [routerLink]="['/dashboard/place', place.id, 'court', court.id]"
+                                class="d-flex align-items-center justify-content-between text-dark small fw-semibold text-decoration-none court-link p-2 rounded">
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge rounded-pill px-3 py-1" [ngClass]="{
+                                  'bg-success': court.type.name === 'TENNIS',
+                                  'bg-primary': court.type.name === 'PADEL',
+                                  'bg-danger': court.type.name === 'SQUASH'
+                                }" style="font-size: 0.8rem;">
+                                        {{ court.type.label }}
+                                    </span>
+                                    <span class="text-truncate" title="{{ court.name }}">{{ court.name }}</span>
+                                </div>
+
+                                <!-- Flèche -->
+                                <i class="bi bi-chevron-right text-muted"></i>
+                            </a>
+                        </li>
+                        }
+                    </ul>
+
+                    <!-- Bouton créer court (plus discret) -->
+                    <a routerLink="/dashboard/place/{{ place.id }}/court/create"
+                        class="btn btn-outline-secondary w-100 fw-semibold" style="border-radius: 0.5rem;">
+                        + Ajouter un nouveau court
                     </a>
                 </div>
+
             </div>
         </div>
         }
     </div>
-
     }
     }
 </div>

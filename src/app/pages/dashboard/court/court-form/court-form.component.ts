@@ -9,14 +9,14 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { Court } from '../../../../models/Court';
+import { CourtType } from '../../../../models/CourtType';
 import { AuthService } from '../../../../services/auth.service';
+import { CourtTypeService } from '../../../../services/court-type.service';
 import { CourtService } from '../../../../services/court.service';
 import { MessageService } from '../../../../services/message.service';
 import { SpinnerService } from '../../../../services/spinner.service';
 import { descriptionValidator } from '../../../../validators/descriptionValidator';
 import { nameValidator } from '../../../../validators/nameValidator';
-import { CourtTypeService } from '../../../../services/court-type.service';
-import { CourtType } from '../../../../models/CourtType';
 
 @Component({
   selector: 'app-court-form',

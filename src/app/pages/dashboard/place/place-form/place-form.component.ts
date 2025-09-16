@@ -88,6 +88,7 @@ export class PlaceFormComponent implements OnInit {
       name: formValue.name || '',
       address: formValue.address || '',
       createdAt: null,
+      courts: null,
       userId: this.authService.getUserId(),
     };
 

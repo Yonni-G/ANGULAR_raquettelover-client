@@ -1,16 +1,15 @@
+import { DatePipe, NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PlaceService } from '../../../../services/place.service';
 import { RouterLink } from '@angular/router';
-import { Place } from '../../../../models/Place';
-import { DatePipe } from '@angular/common';
 import { finalize } from 'rxjs';
-import { SpinnerComponent } from '../../../partials/spinner/spinner.component';
+import { Place } from '../../../../models/Place';
 import { MessageService } from '../../../../services/message.service';
+import { PlaceService } from '../../../../services/place.service';
 import { SpinnerService } from '../../../../services/spinner.service';
 
 @Component({
   selector: 'app-place-list',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, NgClass],
   templateUrl: './place-list.component.html',
   styleUrls: ['./place-list.component.css'],
 })
