@@ -106,7 +106,7 @@ export class CourtFormComponent implements OnInit {
     const formValue = this.form.value;
 
     let court: Court = {
-      id: null, //déjà transmis par la requête
+      id: this.courtId,
       name: formValue.name || '',
       description: formValue.description || '',
       createdAt: null,
