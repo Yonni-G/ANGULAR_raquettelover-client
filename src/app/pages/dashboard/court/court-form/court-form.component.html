@@ -26,7 +26,7 @@
                         </span>
                         <select formControlName="type" id="type" name="type" class="form-select"
                             required>
-                            <option value="" disabled selected>Merci de choisir un sport</option>
+                            <option value="" disabled>Merci de choisir un sport</option>
                             @for (type of types; track type.name) {
                             <option [value]="type.name">{{ type.label }}</option>
                             }
@@ -74,7 +74,7 @@
                     @if(form.get('description')?.hasError('serverError') ||
                     form.get('description')?.hasError('invalidDescription')) {
                     <small class="text-warning fst-italic">{{ form.get('description')?.getError('serverError') || 'La
-                        description doit faire plus de 20 caractères (et 100 au maximum)' }}</small>
+                        description doit faire plus de 10 caractères (et 100 au maximum)' }}</small>
                     }
                     }
                 </div>

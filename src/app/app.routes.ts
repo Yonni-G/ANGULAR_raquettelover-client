@@ -7,6 +7,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { PlaceListComponent } from './pages/dashboard/place/place-list/place-list.component';
 import { PlaceFormComponent } from './pages/dashboard/place/place-form/place-form.component';
 import { CourtFormComponent } from './pages/dashboard/court/court-form/court-form.component';
+import { Error404Component } from './pages/error-404/error-404.component';
 
 export const routes: Routes = [
   {
@@ -18,7 +19,7 @@ export const routes: Routes = [
     component: SigninComponent,
   },
   {
-    path: 'signup',
+    path: 'signup/:signInAs',
     component: SignupComponent,
   },
   {
@@ -69,4 +70,9 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: '404',
+    component: Error404Component,
+  },
+  { path: '**', component: Error404Component },
 ];

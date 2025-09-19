@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ApiPlaceService } from './api-place.service';
 import { Observable } from 'rxjs';
 import { Place } from '../models/Place';
-import { ApiResponse } from '../models/ApiResponse';
+import { ApiPlaceService } from './api-place.service';
 
 @Injectable({
   providedIn: 'root'

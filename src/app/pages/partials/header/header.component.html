@@ -1,56 +1,93 @@
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container-fluid">
-      <a class="navbar-brand" [routerLink]="['/']">MonSite</a>
+      <a class="navbar-brand d-flex align-items-center gap-2" [routerLink]="['/']">
+        <img src="https://images.icon-icons.com/67/PNG/512/tennis_sport_13273.png" width="70" alt="Logo RaquetteLover" />RaquetteLover
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ms-auto">
+
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/']" routerLinkActive="active"
+            <a class="nav-link d-flex align-items-center gap-1" [routerLink]="['/']" routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }">
-              Home
+              <i class="bi bi-house-door-fill"></i> Accueil
             </a>
           </li>
+
           @if(!isLoggedIn) {
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/signin']" routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }">
-              Sign In
-            </a>
+
+          <li class="nav-item dropdown">
+            <button class="btn btn-light nav-link dropdown-toggle d-flex align-items-center gap-1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-plus-fill"></i> Inscription
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" [routerLink]="['/signup/player']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                  <i class="bi bi-person-circle"></i> Joueur
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" [routerLink]="['/signup/manager']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                  <i class="bi bi-gear-fill"></i> Gestionnaire
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/signup']" routerLinkActive="active"
+            <a class="nav-link d-flex align-items-center gap-1" [routerLink]="['/signin']" routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }">
-              Sign Up
+              <i class="bi bi-box-arrow-in-right"></i> Connexion
             </a>
           </li>
           }
+
           @if(isLoggedIn) {
           @if(authService.hasRole('ROLE_ADMIN') || authService.hasRole('ROLE_MANAGER')) {
-<li class="nav-item dropdown">
-  <button class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    Dashboard
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" [routerLink]="['/dashboard/place/list']" routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }">Mes lieux</a></li>
-    <li><a class="dropdown-item" href="#">Another action</a></li>
-    <li><a class="dropdown-item" href="#">Something else here</a></li>
-  </ul>
-</li>
+          <li class="nav-item dropdown">
+            <button class="btn btn-light nav-link dropdown-toggle d-flex align-items-center gap-1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" [routerLink]="['/dashboard/place/list']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                  <i class="bi bi-building"></i> Mes lieux
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" href="#">
+                  <i class="bi bi-graph-up"></i> Another action
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" href="#">
+                  <i class="bi bi-tools"></i> Something else here
+                </a>
+              </li>
+            </ul>
+          </li>
           }
+
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/dashboard/player']" routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }">
-              player
+            <a class="nav-link d-flex align-items-center gap-1" [routerLink]="['/dashboard/player']"
+              routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <i class="bi bi-person-circle"></i> Player
             </a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link" (click)="signOut()" style="cursor: pointer;">
-              Logout ({{ firstName }})
+            <a class="nav-link text-danger d-flex align-items-center gap-1" (click)="signOut()"
+              style="cursor: pointer;">
+              <i class="bi bi-box-arrow-right"></i> Logout ({{ firstName }})
             </a>
           </li>
           }

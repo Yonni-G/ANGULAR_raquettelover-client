@@ -22,14 +22,17 @@ export class ApiAuthService {
     );
   }
 
-  signUp(user: {
-    username: string;
-    password: string;
-    confirmPassword: string;
-  }): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(
-      `${this.baseUrl}/auth/signup`,
-      user
-    );
+  signUp(
+    user: {
+      username: string;
+      password: string;
+      confirmPassword: string;
+    },
+    signInAsManager: boolean
+  ): Observable<ApiResponse<any>> {
+    const url = `${this.baseUrl}/auth/signup${
+      signInAsManager ? '/manager' : ''
+    }`;
+    return this.http.post<ApiResponse<any>>(url, user);
   }
 }

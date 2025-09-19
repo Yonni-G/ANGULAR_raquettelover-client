@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { Place } from '../../../../models/Place';
 import { SpinnerService } from '../../../../services/spinner.service';
+import { codeLieuValidator } from '../../../../validators/codeCentreValidator';
 
 @Component({
   selector: 'app-place-form',
@@ -47,6 +48,7 @@ export class PlaceFormComponent implements OnInit {
 
     // Initialisation du formulaire
     this.form = this.fb.group({
+      codeLieu: new FormControl(null, [Validators.required, codeLieuValidator()]),
       name: new FormControl(null, [Validators.required, nameValidator()]),
       address: new FormControl(null, [Validators.required, addressValidator()]),
     });
@@ -85,8 +87,9 @@ export class PlaceFormComponent implements OnInit {
 
     let place: Place = {
       id: this.placeId,// peut valoir null pour un CREATE ou passé par l'URL pour l'UPDATE
-      name: formValue.name || '',
-      address: formValue.address || '',
+      codeLieu: formValue.codeLieu,
+      name: formValue.name,
+      address: formValue.address,
       createdAt: null,
       courts: null,
       userId: this.authService.getUserId(),

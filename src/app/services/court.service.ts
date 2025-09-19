@@ -15,15 +15,15 @@ export class CourtService {
     return this.apiCourtService.getCourts();
   }
 
-  createPlace(court: Court) {
-    return this.apiCourtService.createCourt(court);
+  createCourt(placeId: number, court: Court) {
+    return this.apiCourtService.createCourt(placeId, court);
   }
 
-  updatePlace(court: Court) {
-    return this.apiCourtService.updateCourt(court);
+  updateCourt(placeId: number, court: Court) {
+    return this.apiCourtService.updateCourt(placeId, court);
   }
 
-  findById(courtId: number): Observable<Court> {
-    return this.apiCourtService.findById(courtId);
+  findById(placeId: number, courtId: number): Observable<Court> {
+    return this.apiCourtService.findById(placeId, courtId);
   }
 }

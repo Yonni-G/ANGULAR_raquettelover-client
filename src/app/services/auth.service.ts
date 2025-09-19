@@ -33,9 +33,9 @@ export class AuthService {
       this.setRoles(roles);
       const userId: number = decodedToken.userId || null;
       this.setUserId(userId);
+      // on informe les abonnés que l'utilisateur est connecté
+      this.setLoggedIn(true);
     }
-    // on informe les abonnés que l'utilisateur est connecté
-    this.setLoggedIn(true);
   }
 
   public setLoggedIn(value: boolean) {
@@ -66,8 +66,8 @@ export class AuthService {
     username: string;
     password: string;
     confirmPassword: string;
-  }): Observable<ApiResponse<any>> {
-    return this.apiAuthService.signUp(user);
+  }, signAsManager: boolean): Observable<ApiResponse<any>> {
+    return this.apiAuthService.signUp(user, signAsManager);
   }
 
   public getJwtToken(): string | null {

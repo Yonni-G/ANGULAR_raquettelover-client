@@ -61,7 +61,7 @@
                     <ul class="list-unstyled mb-3">
                         @for (court of place.courts; track court.id) {
                         <li class="mb-2">
-                            <a [routerLink]="['/dashboard/place', place.id, 'court', court.id]"
+                            <a [routerLink]="['/dashboard/place', place.id, 'court', court.id, 'edit']"
                                 class="d-flex align-items-center justify-content-between text-dark small fw-semibold text-decoration-none court-link p-2 rounded">
 
                                 <div class="d-flex align-items-center gap-2">

@@ -1,6 +1,5 @@
-
 <!-- formulaire de creation/édition d'un lieu dans lequel on a un champ de saisie pour le nom du lieu et un champ de saisie pour l'adresse du lieu -->
- <!-- ce formulaire est stylé à l'aide de Bootstrap et on utilise les classes de Bootstrap pour le mettre en forme ainsi que les icônes bootstrap -->
+<!-- ce formulaire est stylé à l'aide de Bootstrap et on utilise les classes de Bootstrap pour le mettre en forme ainsi que les icônes bootstrap -->
 <main class="container my-5">
     <!-- Section Hero -->
     <section class="text-center mb-5">
@@ -12,11 +11,32 @@
             Complétez le formulaire ci-dessous
         </p>
     </section>
-    
+
     <!-- Section Formulaire -->
     <section class="row">
         <div class="col-md-6 offset-md-3">
             <form (submit)="onSubmit()" [formGroup]="form" class="bg-light p-4 rounded-4 shadow">
+
+
+                <div class="mb-3">
+                    <label for="codeLieu" class="form-label fw-bold text-warning">
+                        <i class="bi bi-envelope-fill me-2"></i>Choisissez votre « Code Lieu » (nom de votre
+                        structure)
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-at text-warning"></i></span>
+                        <input formControlName="codeLieu" type="text" id="codeLieu" name="codeLieu"
+                            class="form-control" [placeholder]="'Code à communiquer à vos joueurs pour inscription'"
+                            required>
+                    </div>
+                    @if(form.get("codeLieu")?.touched && form.get("codeLieu")?.invalid) {
+                    @if(form.get('codeLieu')?.hasError('invalidCodeLieu') ||
+                    form.get('codeLieu')?.hasError('serverError')) {
+                    <small class="text-warning fst-italic">{{ form.get('codeLieu')?.getError('serverError') || 'Le
+                        Code Lieu ne peut contenir que des lettres minuscules et des tirets' }}</small>
+                    }
+                    }
+                </div>
 
                 <div class="mb-3">
                     <label for="name" class="form-label fw-bold text-warning">
@@ -27,12 +47,13 @@
                         <input formControlName="name" type="text" id="name" name="name" class="form-control"
                             placeholder="Nom du lieu" required>
                     </div>
-                @if(form.get("name")?.touched && form.get("name")?.invalid) {
-                @if(form.get('name')?.hasError('invalidName') || form.get('name')?.hasError('serverError')) {
-                <small class="text-warning fst-italic">{{ form.get('name')?.getError('serverError') || 'Le nom doit faire plus
-                    de 2 caractères (et 50 au maximum)' }}</small>
-                }
-                }
+                    @if(form.get("name")?.touched && form.get("name")?.invalid) {
+                    @if(form.get('name')?.hasError('invalidName') || form.get('name')?.hasError('serverError')) {
+                    <small class="text-warning fst-italic">{{ form.get('name')?.getError('serverError') || 'Le nom doit
+                        faire plus
+                        de 2 caractères (et 50 au maximum)' }}</small>
+                    }
+                    }
                 </div>
 
                 <div class="mb-3">
@@ -44,12 +65,14 @@
                         <input formControlName="address" type="text" id="address" name="address" class="form-control"
                             placeholder="Adresse du lieu" required>
                     </div>
-                @if(form.get("address")?.touched && form.get("address")?.invalid) {
-                @if(form.get('address')?.hasError('invalidAddress') || form.get('address')?.hasError('serverError')) {
-                <small class="text-warning fst-italic">{{ form.get('address')?.getError('serverError') || 'L\'adresse doit faire plus
-                    de 20 caractères (et 100 au maximum)' }}</small>
-                }
-                }
+                    @if(form.get("address")?.touched && form.get("address")?.invalid) {
+                    @if(form.get('address')?.hasError('invalidAddress') || form.get('address')?.hasError('serverError'))
+                    {
+                    <small class="text-warning fst-italic">{{ form.get('address')?.getError('serverError') ||
+                        'L\'adresse doit faire plus
+                        de 10 caractères (et 100 au maximum)' }}</small>
+                    }
+                    }
                 </div>
 
                 <div class="text-center mt-4">

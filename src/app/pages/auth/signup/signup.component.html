@@ -4,9 +4,15 @@
         <div class="mb-3">
             <i class="bi bi-person-plus-fill display-3 text-warning"></i>
         </div>
-        <h1 class="fw-bold text-warning mb-3">title</h1>
+        <h1 class="fw-bold text-warning mb-3">Inscription</h1>
+        <p class="text-muted fs-5">Créez dès maintenant votre compte</p>
         <p class="text-muted fs-5">
-            subtitle
+            @if(signInAsManager) {
+            <strong>Gestionnaire de terrains</strong>
+            }
+            @else {
+            <strong>Joueur</strong>
+            }
         </p>
     </section>
 
@@ -21,17 +27,18 @@
                     </label>
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="bi bi-at text-warning"></i></span>
-                        <input formControlName="firstName" type="text" id="firstName" name="firstName" class="form-control"
-                            [placeholder]="'Votre prénom'" required>
+                        <input formControlName="firstName" type="text" id="firstName" name="firstName"
+                            class="form-control" [placeholder]="'Votre prénom'" required>
                     </div>
                     @if(form.get("firstName")?.touched && form.get("firstName")?.invalid) {
-                        @if(form.get('firstName')?.hasError('invalidName') || form.get('firstName')?.hasError('serverError')) {
-                        <small class="text-warning fst-italic">{{ form.get('firstName')?.getError('serverError') || 'Le prénom doit faire plus de 2 caractères' }}</small>
-                        }
+                    @if(form.get('firstName')?.hasError('invalidName') ||
+                    form.get('firstName')?.hasError('serverError')) {
+                    <small class="text-warning fst-italic">{{ form.get('firstName')?.getError('serverError') || 'Le
+                        prénom doit faire plus de 2 caractères' }}</small>
                     }
-
+                    }
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="username" class="form-label fw-bold text-warning">
                         <i class="bi bi-envelope-fill me-2"></i>Votre nom
@@ -42,8 +49,10 @@
                             [placeholder]="'Votre nom'" required>
                     </div>
                     @if(form.get("lastName")?.touched && form.get("lastName")?.invalid) {
-                    @if(form.get('lastName')?.hasError('invalidName') || form.get('lastName')?.hasError('serverError')) {
-                    <small class="text-warning fst-italic">{{ form.get('lastName')?.getError('serverError') || 'Le nom doit faire plus de 2 caractères' }}</small>
+                    @if(form.get('lastName')?.hasError('invalidName') || form.get('lastName')?.hasError('serverError'))
+                    {
+                    <small class="text-warning fst-italic">{{ form.get('lastName')?.getError('serverError') || 'Le nom
+                        doit faire plus de 2 caractères' }}</small>
                     }
                     }
                 </div>
@@ -58,8 +67,10 @@
                             [placeholder]="'Votre adresse email'" required>
                     </div>
                     @if(form.get("username")?.touched && form.get("username")?.invalid) {
-                    @if(form.get('username')?.hasError('invalidEmail') || form.get('username')?.hasError('serverError')) {
-                    <small class="text-warning fst-italic">{{ form.get('username')?.getError('serverError') || 'Cette adresse email n\'est pas une adresse email valide' }}</small>
+                    @if(form.get('username')?.hasError('invalidEmail') || form.get('username')?.hasError('serverError'))
+                    {
+                    <small class="text-warning fst-italic">{{ form.get('username')?.getError('serverError') || 'Cette
+                        adresse email n\'est pas une adresse email valide' }}</small>
                     }
                     }
                 </div>
@@ -73,10 +84,13 @@
                         <input formControlName="password" type="password" id="password" name="password"
                             class="form-control" [placeholder]="'Votre mot de passe'" required>
                     </div>
-                    @if(form.get("password")?.touched && form.get("password")?.invalid) {                    
-                        @if(form.get('password')?.hasError('weakPassword') || form.get('password')?.hasError('serverError')) {
-                           <small class="text-warning fst-italic">{{ form.get('password')?.getError('serverError') || 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.' }}</small>
-                        }
+                    @if(form.get("password")?.touched && form.get("password")?.invalid) {
+                    @if(form.get('password')?.hasError('weakPassword') || form.get('password')?.hasError('serverError'))
+                    {
+                    <small class="text-warning fst-italic">{{ form.get('password')?.getError('serverError') || 'Le mot
+                        de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un
+                        chiffre et un caractère spécial.' }}</small>
+                    }
                     }
                 </div>
 

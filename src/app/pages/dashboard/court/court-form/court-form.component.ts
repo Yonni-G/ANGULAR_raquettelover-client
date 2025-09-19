@@ -56,6 +56,7 @@ export class CourtFormComponent implements OnInit {
     this.courtTypeService
       .getCourtType()
       .subscribe((types) => (this.types = types));
+
     // Initialisation du formulaire
     this.form = this.fb.group({
       type: new FormControl(this.types, [Validators.required]),
@@ -67,12 +68,18 @@ export class CourtFormComponent implements OnInit {
     });
 
     // Si édition, charger les données et pré-remplir le formulaire
-    if (this.isEditMode && this.courtId !== null) {
+    if (this.isEditMode && this.placeId !== null && this.courtId !== null) {
       this.courtService
-        .findById(this.courtId)
+        .findById(this.placeId, this.courtId)
         .pipe(finalize(() => this.spinnerService.hide()))
         .subscribe({
-          next: (data) => this.form.patchValue(data),
+          next: (data) => {
+            this.form.patchValue({
+              type: data.type.name,
+              name: data.name,
+              description: data.description,
+            });
+          },
           error: (err) => {
             this.spinnerService.hide();
             this.messageService.setMessage({
@@ -111,8 +118,8 @@ export class CourtFormComponent implements OnInit {
     this.loading = true;
 
     const saveObservable = this.isEditMode
-      ? this.courtService.updatePlace(court) // Méthode à implémenter dans ton service
-      : this.courtService.createPlace(court);
+      ? this.courtService.updateCourt(this.placeId!, court)
+      : this.courtService.createCourt(this.placeId!, court);
 
     saveObservable.pipe(finalize(() => (this.loading = false))).subscribe({
       next: (response) => {

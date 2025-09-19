@@ -1,13 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
-import { Router } from '@angular/router';
-import { MessageService } from '../../../services/message.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { finalize } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { MessageService } from '../../../services/message.service';
 import { emailValidator } from '../../../validators/emailValidator';
 import { passwordValidator } from '../../../validators/passwordValidator';
-import { finalize } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { nameValidator } from '../../../validators/nameValidator';
 
 @Component({
   selector: 'app-signin',
@@ -19,10 +18,9 @@ export class SigninComponent {
   private readonly messageService: MessageService = inject(MessageService);
   private readonly authService: AuthService = inject(AuthService);
   private readonly jwtHelper = inject(JwtHelperService);
+  loading: boolean = false;
 
-  loading = false;
-
-  form = new FormGroup({    
+  form = new FormGroup({
     username: new FormControl(null, [Validators.required, emailValidator()]),
     password: new FormControl(null, [
       Validators.required,
@@ -48,13 +46,13 @@ export class SigninComponent {
         )
         .subscribe({
           next: (res) => {
-            if(res.data?.firstName) {
+            if (res.data?.firstName) {
               this.authService.setFirstName(res.data.firstName);
             }
             // Succès
             this.authService.setJwtToken(res.data.jwtToken || '');
             this.authService.login();
-            
+
             // rediriger en fonction des rôles
             this.authService.redirectUser(this.authService.getRoles());
           },
