@@ -4,11 +4,10 @@ import { Place } from '../models/Place';
 import { ApiPlaceService } from './api-place.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlaceService {
-
-  constructor(private readonly apiPlaceService: ApiPlaceService) { }
+  constructor(private readonly apiPlaceService: ApiPlaceService) {}
 
   getPlaces(): Observable<Place[]> {
     return this.apiPlaceService.getPlaces();
@@ -25,4 +24,9 @@ export class PlaceService {
   findById(id: number): Observable<Place> {
     return this.apiPlaceService.findById(id);
   }
+
+  findByCodeLieu(codeLieu: string): Observable<number> {
+    return this.apiPlaceService.findByCodeLieu(codeLieu);
+  }
+
 }

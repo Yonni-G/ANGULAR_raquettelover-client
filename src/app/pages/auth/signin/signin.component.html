@@ -25,11 +25,14 @@
                             [placeholder]="'Votre adresse email'" required>
                     </div>
                     @if(form.get("username")?.touched && form.get("username")?.invalid) {
-                    @if(form.get('username')?.hasError('invalidEmail') || form.get('username')?.hasError('serverError')) {
-                    <small class="text-warning fst-italic">{{ form.get('username')?.getError('serverError') || 'Cette adresse email n\'est pas une adresse email valide' }}</small>
+                    @if(form.get('username')?.hasError('invalidEmail') || form.get('username')?.hasError('serverError'))
+                    {
+                    <small class="text-warning fst-italic">{{ form.get('username')?.getError('serverError') || 'Cette
+                        adresse email n\'est pas une adresse email valide' }}</small>
                     }
                     }
                 </div>
+                
                 <div class="mb-3">
                     <label for="password" class="form-label fw-bold text-warning">
                         <i class="bi bi-lock-fill me-2"></i>Votre mot de passe
@@ -40,9 +43,11 @@
                             class="form-control" [placeholder]="'Votre mot de passe'" required>
                     </div>
                     @if(form.get("password")?.touched && form.get("password")?.invalid) {
-                    @if(form.get('password')?.hasError('weakPassword') || form.get('password')?.hasError('serverError')) {
+                    @if(form.get('password')?.hasError('weakPassword') || form.get('password')?.hasError('serverError'))
+                    {
                     <small class="text-warning fst-italic">
-                        {{ form.get('password')?.getError('serverError') || 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.' }}
+                        {{ form.get('password')?.getError('serverError') || 'Le mot de passe doit contenir au moins 8
+                        caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.' }}
                     </small>
                     }
                     }

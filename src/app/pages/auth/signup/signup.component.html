@@ -7,7 +7,7 @@
         <h1 class="fw-bold text-warning mb-3">Inscription</h1>
         <p class="text-muted fs-5">Créez dès maintenant votre compte</p>
         <p class="text-muted fs-5">
-            @if(signInAsManager) {
+            @if(signUpAsManager) {
             <strong>Gestionnaire de terrains</strong>
             }
             @else {
@@ -20,6 +20,26 @@
     <section class="row">
         <div class="col-md-6 offset-md-3">
             <form (submit)="onSubmit()" [formGroup]="form" class="bg-light p-4 rounded-4 shadow">
+
+                @if(!signUpAsManager) {
+                <div class="mb-3">
+                    <label for="codeLieu" class="form-label fw-bold text-warning">
+                        <i class="bi bi-envelope-fill me-2"></i>Code du lieu que vous voulez rejoindre
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-at text-warning"></i></span>
+                        <input formControlName="codeLieu" (keyup)="findByCodeLieu()" type="text" id="codeLieu" name="codeLieu" class="form-control"
+                            [placeholder]="'Code Lieu fourni par votre club, centre, commune...'" required>
+                    </div>
+                    @if(form.get("codeLieu")?.touched && form.get("codeLieu")?.invalid) {
+                    @if(form.get('codeLieu')?.hasError('invalidPlaceId') ||
+                    form.get('codeLieu')?.hasError('serverError'))
+                    {
+                    <small class="text-warning fst-italic">{{ form.get('codeLieu')?.getError('serverError') || 'Un Code Lieu ne peut contenir que des lettres minuscules et des tirets' }}</small>
+                    }
+                    }
+                </div>
+                }
 
                 <div class="mb-3">
                     <label for="username" class="form-label fw-bold text-warning">
@@ -127,11 +147,4 @@
         </div>
     </section>
 
-    <!-- Section Call-To-Action 
-    <section class="text-center mt-5">
-        <p class="text-muted">{{ 'REGISTER.ALREADY_REGISTERED' | translate }}</p>
-        <a routerLink="/login" routerLinkActive="active" class="btn btn-outline-warning fw-bold">
-            <i class="bi bi-box-arrow-in-right me-2"></i>{{ 'REGISTER.LOGIN' | translate }}
-        </a>
-    </section>-->
 </main>

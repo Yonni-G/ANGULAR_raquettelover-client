@@ -6,16 +6,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { nameValidator } from '../../../../validators/nameValidator';
-import { addressValidator } from '../../../../validators/addressValidator';
-import { PlaceService } from '../../../../services/place.service';
-import { MessageService } from '../../../../services/message.service';
-import { AuthService } from '../../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { Place } from '../../../../models/Place';
+import { AuthService } from '../../../../services/auth.service';
+import { MessageService } from '../../../../services/message.service';
+import { PlaceService } from '../../../../services/place.service';
 import { SpinnerService } from '../../../../services/spinner.service';
-import { codeLieuValidator } from '../../../../validators/codeCentreValidator';
+import { addressValidator } from '../../../../validators/addressValidator';
+import { codeLieuValidator } from '../../../../validators/codeLieuValidator';
+import { nameValidator } from '../../../../validators/nameValidator';
 
 @Component({
   selector: 'app-place-form',
@@ -48,7 +48,10 @@ export class PlaceFormComponent implements OnInit {
 
     // Initialisation du formulaire
     this.form = this.fb.group({
-      codeLieu: new FormControl(null, [Validators.required, codeLieuValidator()]),
+      codeLieu: new FormControl(null, [
+        Validators.required,
+        codeLieuValidator(),
+      ]),
       name: new FormControl(null, [Validators.required, nameValidator()]),
       address: new FormControl(null, [Validators.required, addressValidator()]),
     });

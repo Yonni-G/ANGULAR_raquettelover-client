@@ -5,14 +5,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MessageService } from '../../../services/message.service';
-import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { emailValidator } from '../../../validators/emailValidator';
-import { passwordValidator } from '../../../validators/passwordValidator';
-import { passwordMatchValidator } from '../../../validators/passwordMatchValidator';
 import { finalize } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { MessageService } from '../../../services/message.service';
+import { PlaceService } from '../../../services/place.service';
+import { emailValidator } from '../../../validators/emailValidator';
 import { nameValidator } from '../../../validators/nameValidator';
+import { passwordMatchValidator } from '../../../validators/passwordMatchValidator';
+import { passwordValidator } from '../../../validators/passwordValidator';
+import { codeLieuValidator } from '../../../validators/codeLieuValidator';
 
 @Component({
   selector: 'app-signup',
@@ -22,30 +24,35 @@ import { nameValidator } from '../../../validators/nameValidator';
 })
 export class SignupComponent implements OnInit {
   private readonly messageService: MessageService = inject(MessageService);
+  private readonly placeService: PlaceService = inject(PlaceService);
   private readonly authService: AuthService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   private readonly allowedRoles = ['player', 'manager']; // Paramètres attendus
 
-  signInAsManager = false;
+  signUpAsManager = false;
+  placeId: Number | null = null;
   loading = false;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
-      const signInAs = paramMap.get('signInAs');
+      const signUpAs = paramMap.get('signUpAs');
       // Traitement avec signInAs
-      if (!this.allowedRoles.includes(signInAs!)) {
+      if (!this.allowedRoles.includes(signUpAs!)) {
         // Redirection ou affichage d’une erreur
         this.router.navigate(['/404']);
       }
-      this.signInAsManager = signInAs === 'manager'
+      this.signUpAsManager = signUpAs === 'manager';
+
+      this.updateCodeLieuValidators();
     });
   }
 
   // ici les formControl communs
   form = new FormGroup(
     {
+      codeLieu: new FormControl(null),
       firstName: new FormControl(null, [Validators.required, nameValidator()]),
       lastName: new FormControl(null, [Validators.required, nameValidator()]),
       username: new FormControl('', [Validators.required, emailValidator()]),
@@ -55,21 +62,48 @@ export class SignupComponent implements OnInit {
     { validators: passwordMatchValidator() }
   );
 
+  private updateCodeLieuValidators(): void {
+    const codeLieuControl = this.form.get('codeLieu');
+
+    if (this.signUpAsManager) {
+      codeLieuControl?.clearValidators();
+    } else {
+      codeLieuControl?.setValidators([
+        Validators.required,
+        codeLieuValidator(),
+      ]);
+    }
+    codeLieuControl?.updateValueAndValidity();
+  }
+
+  findByCodeLieu() {
+    const codeLieu = this.form.value.codeLieu;
+    this.placeService.findByCodeLieu(codeLieu!).subscribe({
+      next: (placeId) => (this.placeId = placeId),
+      error: (err) => {
+        const control = this.form.get('codeLieu');
+        control?.setErrors({
+          serverError: err.error.error.message,
+        });
+      },
+    });
+  }
 
   onSubmit() {
     if (this.form.valid) {
       let user: any = {
+        placeId: this.placeId || '',
         firstName: this.form.value.firstName || '',
         lastName: this.form.value.lastName || '',
         username: this.form.value.username || '',
         password: this.form.value.password || '',
-        confirmPassword: this.form.value.confirmPassword || ''        
+        confirmPassword: this.form.value.confirmPassword || '',
       };
 
       this.loading = true;
       // on va interroger notre api via le service authService
       this.authService
-        .signUp(user, this.signInAsManager)
+        .signUp(user, this.signUpAsManager)
         .pipe(
           finalize(() => {
             this.loading = false; // ← toujours exécuté

@@ -30,8 +30,8 @@ export class ApiAuthService {
     },
     signInAsManager: boolean
   ): Observable<ApiResponse<any>> {
-    const url = `${this.baseUrl}/auth/signup${
-      signInAsManager ? '/manager' : ''
+    const url = `${this.baseUrl}/auth/signup/${
+      signInAsManager ? 'manager' : 'player'
     }`;
     return this.http.post<ApiResponse<any>>(url, user);
   }

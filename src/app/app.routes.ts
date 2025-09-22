@@ -19,7 +19,7 @@ export const routes: Routes = [
     component: SigninComponent,
   },
   {
-    path: 'signup/:signInAs',
+    path: 'signup/:signUpAs',
     component: SignupComponent,
   },
   {
