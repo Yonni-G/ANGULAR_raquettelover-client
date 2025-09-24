@@ -34,7 +34,7 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          local-dir: ./dist/raquetteloverclient/browser/
+          local-dir: ./dist/raquettelover-client/browser/
           server-dir: /raquettelover/
           exclude: |
             **/.git*
