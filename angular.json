@@ -34,11 +34,11 @@
             "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },
           "configurations": {
-            "prod": {
+            "production": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment-prod.ts"
+                  "with": "src/environments/environment-production.ts"
                 }
               ],
               "budgets": [
