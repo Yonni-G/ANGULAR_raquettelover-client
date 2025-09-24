@@ -2,7 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center gap-2" [routerLink]="['/']">
-        <img src="https://images.icon-icons.com/67/PNG/512/tennis_sport_13273.png" width="70" alt="Logo RaquetteLover" />RaquetteLover
+        <img src="https://images.icon-icons.com/67/PNG/512/tennis_sport_13273.png" width="70"
+          alt="Logo RaquetteLover" />RaquetteLover
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +55,7 @@
           <li class="nav-item dropdown">
             <button class="btn btn-light nav-link dropdown-toggle d-flex align-items-center gap-1"
               data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-speedometer2"></i> Dashboard
+              <i class="bi bi-speedometer2"></i> Gestion
             </button>
             <ul class="dropdown-menu">
               <li>
@@ -65,12 +66,29 @@
               </li>
               <li>
                 <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                  <i class="bi bi-graph-up"></i> Another action
+                  <i class="bi bi-calendar"></i> Réservations
+                </a>
+              </li>
+            </ul>
+          </li>
+          }
+          @else {
+
+          <li class="nav-item dropdown">
+            <button class="btn btn-light nav-link dropdown-toggle d-flex align-items-center gap-1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i> {{ firstName}}
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" [routerLink]="['/dashboard/place/list']"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                  <i class="bi bi-calendar-check"></i> Mes réservations
                 </a>
               </li>
               <li>
                 <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                  <i class="bi bi-tools"></i> Something else here
+                  <i class="bi bi-info-square-fill"></i> Mon profil
                 </a>
               </li>
             </ul>
@@ -78,16 +96,9 @@
           }
 
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-1" [routerLink]="['/dashboard/player']"
-              routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              <i class="bi bi-person-circle"></i> Player
-            </a>
-          </li>
-
-          <li class="nav-item">
             <a class="nav-link text-danger d-flex align-items-center gap-1" (click)="signOut()"
               style="cursor: pointer;">
-              <i class="bi bi-box-arrow-right"></i> Logout ({{ firstName }})
+              <i class="bi bi-box-arrow-right"></i> Déconnexion
             </a>
           </li>
           }
