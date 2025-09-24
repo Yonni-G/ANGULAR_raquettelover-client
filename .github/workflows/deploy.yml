@@ -1,0 +1,43 @@
+name: Deploy Angular on OVH FTP.
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟦 Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🛠️ Build Angular app
+        run: npm run build -- --configuration production --base-href /raquettelover/
+
+      - name: 📂 List build output
+        run: ls -la ./dist/client/browser
+
+      - name: 📤 Deploy to OVH FTP (main)
+        if: github.ref == 'refs/heads/main'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          local-dir: ./dist/client/browser/
+          server-dir: /raquettelover/
+          exclude: |
+            **/.git*
+            **/.DS_Store
+          dangerous-clean-slate: false
+          dry-run: false
