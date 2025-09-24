@@ -69,7 +69,7 @@ export class SigninComponent {
               type: 'error',
             });
             // on regarde si on a reçu un tableau fields avec des erreurs de validation
-            if (err.error.error.fields) {
+            if (err.error?.error?.fields) {
               for (let fieldError of err.error.error.fields) {
                 // on cherche le FormControl correspondant
                 const control = this.form.get(fieldError.field);
