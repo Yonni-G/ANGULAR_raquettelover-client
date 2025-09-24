@@ -25,7 +25,7 @@ jobs:
         run: npm run build -- --configuration production --base-href /raquettelover/
 
       - name: 📂 List build output
-        run: ls -la ./dist/client/browser
+        run: ls -la ./dist/raquettelover-client/browser
 
       - name: 📤 Deploy to OVH FTP (main)
         if: github.ref == 'refs/heads/main'
