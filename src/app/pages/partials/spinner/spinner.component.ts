@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SpinnerService } from '../../../services/spinner.service';
+import { Spinner } from '../../../models/Spinner';
 
 @Component({
   selector: 'app-spinner',
@@ -9,8 +10,8 @@ import { SpinnerService } from '../../../services/spinner.service';
 })
 export class SpinnerComponent {
 
-  loading: boolean = false;
+  spinner!: Spinner;
   constructor(private readonly spinnerService: SpinnerService) {
-    spinnerService.loading$.subscribe(loading => this.loading = loading)
+    spinnerService.loading$.subscribe((spinner) => (this.spinner = spinner));
   }
 }

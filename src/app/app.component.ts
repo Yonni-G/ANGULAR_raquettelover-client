@@ -4,6 +4,9 @@ import { FooterComponent } from './pages/partials/footer/footer.component';
 import { HeaderComponent } from './pages/partials/header/header.component';
 import { MessageComponent } from './pages/partials/message/message.component';
 import { SpinnerComponent } from './pages/partials/spinner/spinner.component';
+import { SpinnerService } from './services/spinner.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -12,5 +15,12 @@ import { SpinnerComponent } from './pages/partials/spinner/spinner.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'raquettelover-client';
+  private readonly baseUrl = environment.apiUrl;
+
+  constructor(private readonly spinnerService: SpinnerService, private readonly http: HttpClient) {
+    this.spinnerService.show("Merci de patienter pendant le chargement de l'API, cela peut prendre plusieurs dizaines de secondes...");
+    this.http
+      .get(this.baseUrl + '/test/all', { responseType: 'text' })
+      .subscribe(() => this.spinnerService.hide());
+  }
 }
