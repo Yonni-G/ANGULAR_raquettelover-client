@@ -1,62 +1,72 @@
-<div class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-primary text-white">
-        <span class="badge bg-warning text-dark me-2">EN COURS DE DÉVELOPPEMENT</span>
-        Réflexions sur la partie Réservations
-    </div>
-    <div class="card-body">
-        <p>Pour le moment, l'essentiel de mon travail a porté sur l'implémentation de l'API, avec l'authentification, la gestion des rôles, les endpoint et les règles métiers concernant la création des lieux, des courts, des réservations, des participations...</p>
-        <p>
-            Le frontend n'est pas encore beaucoup avancé. Il s'appuie sur le framework <strong>Angular 19</strong> (hébergement OVH).
-        </p>
-        <p>
-            En backend, un serveur expose une <strong>API REST</strong> (conteneur Docker chez Render.com) développée
-            avec
-            <strong>Java Spring Boot (JDK&nbsp;17)</strong>. Les données sont stockées dans une base
-            <strong>PostgreSQL</strong>.
-        </p>
-        <p>
-            J’ai entièrement construit le modèle de données : définition du <abbr
-                title="Modèle Conceptuel de Données">MCD</abbr>
-            avec entités et relations, puis passage au <abbr title="Modèle Logique de Données">MLD</abbr> pour
-            identifier les tables nécessaires. J'ai beaucoup aimé réfléchir à cela.
-        </p>
+<main class="container my-5">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+            <span class="badge bg-warning text-dark me-2">EN COURS DE DÉVELOPPEMENT</span>
+            Réflexions sur la partie Réservations
+        </div>
+        <div class="card-body">
+            <p>Pour le moment, l'essentiel de mon travail a porté sur l'implémentation de l'API, avec
+                l'authentification, la gestion des rôles, les endpoint et les règles métiers concernant la création des
+                lieux, des courts, des réservations, des participations...</p>
+            <p>
+                Le frontend n'est pas encore beaucoup avancé. Il s'appuie sur le framework <strong>Angular 19</strong>
+                (hébergement OVH).
+            </p>
+            <p>
+                En backend, un serveur expose une <strong>API REST</strong> (conteneur Docker chez Render.com)
+                développée
+                avec
+                <strong>Java Spring Boot (JDK&nbsp;17)</strong>. Les données sont stockées dans une base
+                <strong>PostgreSQL</strong>.
+            </p>
+            <p>
+                J’ai entièrement construit le modèle de données : définition du <abbr
+                    title="Modèle Conceptuel de Données">MCD</abbr>
+                avec entités et relations, puis passage au <abbr title="Modèle Logique de Données">MLD</abbr> pour
+                identifier les tables nécessaires. J'ai beaucoup aimé réfléchir à cela.
+            </p>
 
-        <h6 class="mt-3">Plusieurs rôles définis :</h6>
-        <ul>
-            <li><strong>User (joueur)</strong> : réserver un court (public/privé), ajouter des invités, rejoindre une
-                réservation publique.</li>
-            <li><strong>Manager (gestionnaire)</strong> : créer des lieux, associer des courts, gérer les réservations/participations
-                de ses courts.</li>
-            <li><strong>Admin</strong> : accès complet à toutes les fonctionnalités.</li>
-        </ul>
+            <h6 class="mt-3">Plusieurs rôles définis :</h6>
+            <ul>
+                <li><strong>User (joueur)</strong> : réserver un court (public/privé), ajouter des invités, rejoindre
+                    une
+                    réservation publique.</li>
+                <li><strong>Manager (gestionnaire)</strong> : créer des lieux, associer des courts, gérer les
+                    réservations/participations
+                    de ses courts.</li>
+                <li><strong>Admin</strong> : accès complet à toutes les fonctionnalités.</li>
+            </ul>
 
-        <p class="mt-3">
-            À l’aide de fichiers <code>Dockerfile</code>, un pipeline CI/CD a été mis en place pour automatiser
-            (sur push <code>main</code>) le déploiement des conteneurs sur <strong>Render.com</strong>.
-        </p>
+            <p class="mt-3">
+                À l’aide de fichiers <code>Dockerfile</code>, un pipeline CI/CD a été mis en place pour automatiser
+                (sur push <code>main</code>) le déploiement des conteneurs sur <strong>Render.com</strong>.
+            </p>
+        </div>
     </div>
-</div>
-<div class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-primary text-white">
-        <span class="badge bg-warning text-dark me-2">DÉMO</span>
-        Parties fonctionnelles
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+            <span class="badge bg-warning text-dark me-2">DÉMO</span>
+            Parties fonctionnelles
+        </div>
+        <div class="card-body">
+            <p class="mt-3">
+                Pour la démo, vous pouvez vous inscrire en tant qu'utilisateur normal (joueur) ou en tant que
+                gestionnaire.
+                Plusieurs lieux et courts ont déjà été créés.
+            </p>
+            <ul>
+                <li>Pour vous inscrire en tant que joueur, utilisez le code lieu <i>artligne</i>
+                </li>
+                <li>Pour vous inscrire en tant que gestionnaire, choisissez "S'inscrire en tant que gestionnaire" dans
+                    le formulaire
+                    d'inscription.
+                </li>
+                <li>Vous pouvez aussi utiliser le compte gestionnaire suivant pour vous connecter (pré-rempli) :
+                    <ul>
+                        <li>Gestionnaire : <strong>manager&#64;gmail.com</strong> / <strong>Popo45!!</strong></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="card-body">
-        <p class="mt-3">
-            Pour la démo, vous pouvez vous inscrire en tant qu'utilisateur normal (joueur) ou en tant que gestionnaire.
-            Plusieurs lieux et courts ont déjà été créés.
-        </p>
-        <ul>
-            <li>Pour vous inscrire en tant que joueur, utilisez le code lieu <i>artligne</i>
-            </li>
-            <li>Pour vous inscrire en tant que gestionnaire, choisissez "S'inscrire en tant que gestionnaire" dans le formulaire
-                d'inscription.
-            </li>
-            <li>Vous pouvez aussi utiliser le compte gestionnaire suivant pour vous connecter (pré-rempli) :
-                <ul>
-                    <li>Gestionnaire : <strong>manager&#64;gmail.com</strong> / <strong>Popo45!!</strong></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</div>
+</main>
