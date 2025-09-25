@@ -19,10 +19,9 @@ export class AppComponent {
   private readonly baseUrl = environment.apiUrl;
 
   constructor(private readonly spinnerService: SpinnerService, private readonly http: HttpClient) {
-    this.spinnerService.show("Merci de patienter pendant le chargement de l'API, cela peut prendre plusieurs dizaines de secondes...");
+    this.spinnerService.show("Réveil en cours du serveur gratuit Render sur lequel est hébergé l'API Rest, cela peut prendre plus de 1 minute...");
     this.http
       .get(this.baseUrl + '/test/all', { responseType: 'text' })
-      .pipe(delay(10000))
       .subscribe(() => this.spinnerService.hide());
   }
 }

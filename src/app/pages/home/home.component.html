@@ -1,1 +1,37 @@
-<p>home works!</p>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+        <span class="badge bg-warning text-dark me-2">EN COURS DE DÉVELOPPEMENT</span>
+        Réflexions sur la partie Réservations
+    </div>
+    <div class="card-body">
+        <p>
+            Le frontend s'appuie sur le framework <strong>Angular 19</strong> (hébergement OVH).
+        </p>
+        <p>
+            En backend, un serveur expose une <strong>API REST</strong> (conteneur Docker chez Render.com) développée
+            avec
+            <strong>Java Spring Boot (JDK&nbsp;17)</strong>. Les données sont stockées dans une base
+            <strong>PostgreSQL</strong>.
+        </p>
+        <p>
+            J’ai entièrement construit le modèle de données : définition du <abbr
+                title="Modèle Conceptuel de Données">MCD</abbr>
+            avec entités et relations, puis passage au <abbr title="Modèle Logique de Données">MLD</abbr> pour
+            identifier les tables nécessaires.
+        </p>
+
+        <h6 class="mt-3">Rôles définis :</h6>
+        <ul>
+            <li><strong>User (joueur)</strong> : réserver un court (public/privé), ajouter des invités, rejoindre une
+                réservation publique.</li>
+            <li><strong>Manager</strong> : créer des lieux, associer des courts, gérer les réservations/participations
+                de ses courts.</li>
+            <li><strong>Admin</strong> : accès complet à toutes les fonctionnalités.</li>
+        </ul>
+
+        <p class="mt-3">
+            À l’aide de fichiers <code>Dockerfile</code>, un pipeline CI/CD a été mis en place pour automatiser
+            (sur push <code>main</code>) le déploiement des conteneurs sur <strong>Render.com</strong>.
+        </p>
+    </div>
+</div>

@@ -21,8 +21,8 @@ export class SigninComponent {
   loading: boolean = false;
 
   form = new FormGroup({
-    username: new FormControl(null, [Validators.required, emailValidator()]),
-    password: new FormControl(null, [
+    username: new FormControl("manager@gmail.com", [Validators.required, emailValidator()]),
+    password: new FormControl("Popo45!!", [
       Validators.required,
       // Au moins 8 caractères, au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial
       passwordValidator(),

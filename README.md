@@ -1,59 +1,41 @@
-# RaquetteloverClient
+# Réservations — Notes de conception
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.4.
+## 🚧 En cours de développement / réflexions
 
-## Development server
+### Architecture technique
 
-To start a local development server, run:
+- **Frontend** : Angular 19 (hébergé chez OVH)  
+- **Backend** : API REST développée avec Java Spring Boot (JDK 17)  
+  - Packagée dans des conteneurs Docker  
+  - Déployée sur Render.com  
+- **Base de données** : PostgreSQL  
 
-```bash
-ng serve
-```
+### Modélisation des données
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Conception complète du **MCD** (entités & relations)  
+- Transformation en **MLD** avec définition des tables nécessaires  
+- Objectif : gestion claire des réservations, des participations et des invités  
 
-## Code scaffolding
+### Rôles et permissions
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **User (joueur)**  
+  - Réserver un court (public ou privé)  
+  - Ajouter des invités  
+  - Rejoindre une réservation publique et y ajouter des invités  
 
-```bash
-ng generate component component-name
-```
+- **Manager**  
+  - Créer des lieux et y associer des courts  
+  - Gérer les réservations/participations liées aux courts dont il est responsable  
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Admin**  
+  - Accès complet à toutes les fonctionnalités  
 
-```bash
-ng generate --help
-```
+### CI/CD
 
-## Building
+- Définition de fichiers `Dockerfile` pour le build  
+- Mise en place d’un pipeline **CI/CD** (déclenché sur `push` vers `main`)  
+- Déploiement automatisé des conteneurs Docker sur **Render.com**
 
-To build the project run:
+---
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+✍️ *Ces notes résument l’état actuel de la réflexion et de la conception autour du module de réservations.*
