@@ -20,7 +20,6 @@ export class PlaceListComponent implements OnInit {
     private readonly spinnerService: SpinnerService
   ) {}
   places: Place[] = [];
-  loading: boolean = true;
   errorMessage: string | null = null;
 
   ngOnInit() {
