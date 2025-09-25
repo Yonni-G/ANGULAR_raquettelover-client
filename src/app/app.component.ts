@@ -7,6 +7,7 @@ import { SpinnerComponent } from './pages/partials/spinner/spinner.component';
 import { SpinnerService } from './services/spinner.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent {
     this.spinnerService.show("Merci de patienter pendant le chargement de l'API, cela peut prendre plusieurs dizaines de secondes...");
     this.http
       .get(this.baseUrl + '/test/all', { responseType: 'text' })
+      .pipe(delay(10000))
       .subscribe(() => this.spinnerService.hide());
   }
 }
