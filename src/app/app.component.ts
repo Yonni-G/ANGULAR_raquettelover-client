@@ -16,12 +16,14 @@ import { delay } from 'rxjs';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  private readonly baseUrl = environment.apiUrl;
+  // private readonly baseUrl = environment.apiUrl;
 
-  constructor(private readonly spinnerService: SpinnerService, private readonly http: HttpClient) {
-    this.spinnerService.show("Réveil en cours du serveur gratuit Render sur lequel est hébergé l'API Rest, cela peut prendre plus de 1 minute...");
-    this.http
-      .get(this.baseUrl + '/test/all', { responseType: 'text' })
-      .subscribe(() => this.spinnerService.hide());
-  }
+  // constructor(private readonly spinnerService: SpinnerService, private readonly http: HttpClient) {
+  //   if(environment.production) {
+  //   this.spinnerService.show("Réveil en cours du serveur gratuit Render sur lequel est hébergé l'API Rest, cela peut prendre plus de 1 minute...");
+  //   this.http
+  //     .get(this.baseUrl + '/test/all', { responseType: 'text' })
+  //     .subscribe(() => this.spinnerService.hide());
+  //   }
+  // }
 }

@@ -20,4 +20,9 @@ describe('PlayerHomeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display init message', () => {
+    const initMsg = fixture.nativeElement.querySelector('p');
+    expect(initMsg.textContent).toContain('zone');
+  })
 });
